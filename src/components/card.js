@@ -1,4 +1,5 @@
-const placeList = document.querySelector(".places__list");
+import { initialCards } from "./cards";
+import { placeList } from "../index";
 
 const createCard = (dataFromCards, onDeleteCardCallback) => {
 
@@ -27,4 +28,4 @@ const deleteCard = (cardElement) => {
   cardElement.remove();
 };
 
-placeCards();
+export { placeCards }
