@@ -1,11 +1,11 @@
-import { editProfileButton, profileEditPopup } from "../index";
+import { popupsOverlays } from "../index";
 
-const openModal = () => {
-  profileEditPopup.classList.add("popup_is-opened");
+const openModal = (popup) => {
+  popup.classList.add("popup_is-opened");
 }
 
-const closeModal = () => {
-  profileEditPopup.classList.remove("popup_is-opened");
+const closeModal = (popup) => {
+  popup.classList.remove("popup_is-opened");
 }
 
 export { openModal, closeModal }

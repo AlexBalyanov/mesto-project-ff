@@ -6,16 +6,33 @@ const placeList = document.querySelector(".places__list");
 
 const editProfileButton = document.querySelector(".profile__edit-button");
 const addCardButton = document.querySelector(".profile__add-button");
+const popupCloseButtons = document.querySelectorAll(".popup__close");
 
-const profileEditPopup = document.querySelector(".popup_type_edit");
+const editProfilePopup = document.querySelector(".popup_type_edit");
 const addCardPopup = document.querySelector(".popup_type_new-card");
-const popupCloseButton = document.querySelector(".popup__close")
 
-
-editProfileButton.addEventListener("click", openModal);
-popupCloseButton.addEventListener("click", closeModal);
-
+const popupsOverlays = document.querySelectorAll(".popup");
 
 placeCards();
 
-export { placeList, editProfileButton, addCardButton, profileEditPopup, addCardPopup, popupCloseButton }
+editProfileButton.addEventListener("click", () => {
+  openModal(editProfilePopup);
+});
+
+addCardButton.addEventListener("click", () => {
+  openModal(addCardPopup);
+});
+
+popupCloseButtons.forEach((item) => {
+  item.addEventListener("click", () => {
+    closeModal(item.closest(".popup"));
+  });
+});
+
+popupsOverlays.forEach((item) => {
+  item.addEventListener("click", (evt) => {
+    closeModal(evt.target);
+  });
+});
+
+export { placeList, editProfileButton, addCardButton, editProfilePopup, addCardPopup, popupsOverlays }
