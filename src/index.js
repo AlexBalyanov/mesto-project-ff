@@ -26,26 +26,22 @@ placeCards();
 
 editProfileButton.addEventListener("click", () => {
   openModal(editProfilePopup);
-  document.addEventListener("keydown", handleEscKey);
 });
 
 addCardButton.addEventListener("click", () => {
   openModal(addCardPopup);
-  document.addEventListener("keydown", handleEscKey);
 });
 
 popupCloseButtons.forEach((item) => {
   item.addEventListener("click", () => {
     closeModal(item.closest(".popup"));
-    document.removeEventListener("keydown", handleEscKey);
   });
 });
 
 modalWindows.forEach((item) => {
   item.addEventListener("click", (evt) => {
-    closeModal(evt.target);
     if (!item.classList.contains("popup_is-opened")) {
-      document.removeEventListener("keydown", handleEscKey);
+      closeModal(evt.target);
     }
   });
 });
