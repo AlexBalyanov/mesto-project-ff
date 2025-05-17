@@ -1,4 +1,4 @@
-import { modalWindows } from "../index";
+import {jobDescription, jobInput, modalWindows, nameInput, profileName} from "../index";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -17,4 +17,19 @@ const handleEscKey = (evt) => {
   }
 };
 
-export { openModal, closeModal, handleEscKey }
+const handleFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const name = nameInput.value;
+  const job = jobInput.value;
+
+  profileName.textContent = name;
+  jobDescription.textContent = job;
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+    document.removeEventListener("keydown", handleEscKey);
+  });
+};
+
+export { openModal, closeModal, handleEscKey, handleFormSubmit };
