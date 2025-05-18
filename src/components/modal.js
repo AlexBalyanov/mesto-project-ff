@@ -9,17 +9,17 @@ import {
   placeList,
   profileName
 } from "../index";
-import {createCard, deleteCard} from "./card";
+import {createCard, deleteCard, likeCard} from "./card";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
   document.addEventListener("keydown", handleEscKey);
-}
+};
 
 const closeModal = (popup) => {
   popup.classList.remove("popup_is-opened");
   document.removeEventListener("keydown", handleEscKey);
-}
+};
 
 const handleEscKey = (evt) => {
   if(evt.key === "Escape") {
@@ -57,7 +57,7 @@ const handleAddCardFormSubmit = (evt) => {
   cardObject.name = place;
   cardObject.link = link;
 
-  const cardData = createCard(cardObject, deleteCard);
+  const cardData = createCard(cardObject, deleteCard, likeCard);
   placeList.prepend(cardData);
 
   modalWindows.forEach((item) => {
@@ -65,6 +65,6 @@ const handleAddCardFormSubmit = (evt) => {
   });
 
   addCardForm.reset();
-}
+};
 
 export { openModal, closeModal, handleEscKey, handleEditProfileFormSubmit, handleAddCardFormSubmit };

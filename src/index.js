@@ -16,15 +16,15 @@ const editProfileForm = document.querySelector('form[name="edit-profile"]');
 let nameInput = document.querySelector('input[name="name"]');
 let jobInput = document.querySelector('input[name="description"]');
 
+const addCardForm = document.querySelector('form[name="new-place"]');
+const placeInput = document.querySelector('input[name="place-name"]');
+const linkInput = document.querySelector('input[name="link"]');
+
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
 nameInput.value = profileName.textContent;
 jobInput.value = jobDescription.textContent;
-
-const addCardForm = document.querySelector('form[name="new-place"]');
-const placeInput = document.querySelector('input[name="place-name"]');
-const linkInput = document.querySelector('input[name="link"]');
 
 placeCards();
 

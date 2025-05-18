@@ -1,7 +1,7 @@
 import { initialCards } from "./cards";
 import { placeList } from "../index";
 
-const createCard = (dataFromCards, onDeleteCardCallback) => {
+const createCard = (dataFromCards, onDeleteCardCallback, OnCardLikeCallback) => {
 
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -14,12 +14,16 @@ const createCard = (dataFromCards, onDeleteCardCallback) => {
     onDeleteCardCallback(cardElement);  
   });
 
+  cardElement.querySelector(".card__like-button").addEventListener("click", (evt) => {
+    OnCardLikeCallback(evt.target);
+  })
+
   return cardElement;
 };
 
 const placeCards = () => {
   initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard);
+    const cardData = createCard(cardItem, deleteCard, likeCard);
     placeList.append(cardData);
   });
 };
@@ -28,4 +32,8 @@ const deleteCard = (cardElement) => {
   cardElement.remove();
 };
 
-export { placeCards, createCard, deleteCard }
+const likeCard = (likeButton) => {
+  likeButton.classList.toggle("card__like-button_is-active");
+};
+
+export { placeCards, createCard, deleteCard, likeCard };
