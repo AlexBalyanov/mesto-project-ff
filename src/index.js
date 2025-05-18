@@ -1,11 +1,11 @@
 import "./pages/index.css";
-import { placeCards } from "./components/card";
+import { createCard, deleteCard, likeCard } from "./components/card";
 import {
   closeModal,
   openModal,
-  handleEditProfileFormSubmit,
-  handleAddCardFormSubmit
+  showCard
 } from "./components/modal";
+import { initialCards } from "./components/cards";
 
 const placeList = document.querySelector(".places__list");
 
@@ -16,11 +16,14 @@ const popupCloseButtons = document.querySelectorAll(".popup__close");
 const editProfilePopup = document.querySelector(".popup_type_edit");
 const addCardPopup = document.querySelector(".popup_type_new-card");
 const showCardPopup = document.querySelector(".popup_type_image");
+const popupImage = showCardPopup.querySelector(".popup__image");
+const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
+
 const modalWindows = document.querySelectorAll(".popup");
 
 const editProfileForm = document.querySelector('form[name="edit-profile"]');
-let nameInput = document.querySelector('input[name="name"]');
-let jobInput = document.querySelector('input[name="description"]');
+const nameInput = document.querySelector('input[name="name"]');
+const jobInput = document.querySelector('input[name="description"]');
 
 const addCardForm = document.querySelector('form[name="new-place"]');
 const placeInput = document.querySelector('input[name="place-name"]');
@@ -29,7 +32,50 @@ const linkInput = document.querySelector('input[name="link"]');
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
-placeCards();
+(function placeCards() {
+  initialCards.forEach((cardItem) => {
+    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
+    placeList.append(cardData);
+  });
+})();
+
+const handleEditProfileFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const name = nameInput.value;
+  const job = jobInput.value;
+
+  profileName.textContent = name;
+  jobDescription.textContent = job;
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+  });
+};
+
+const handleAddCardFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const place = placeInput.value;
+  const link = linkInput.value;
+
+  const cardObject = {
+    name: "",
+    link: ""
+  };
+
+  cardObject.name = place;
+  cardObject.link = link;
+
+  const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
+  placeList.prepend(cardData);
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+  });
+
+  addCardForm.reset();
+};
 
 editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
@@ -67,5 +113,7 @@ export {
   addCardForm,
   placeInput,
   linkInput,
-  showCardPopup
+  showCardPopup,
+  popupImage,
+  popupPlaceDescription
 };

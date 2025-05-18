@@ -1,7 +1,3 @@
-import { initialCards } from "./cards";
-import { placeList } from "../index";
-import { showCard } from "./modal";
-
 const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback) => {
 
   const cardTemplate = document.querySelector("#card-template").content;
@@ -30,13 +26,6 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   return cardElement;
 };
 
-const placeCards = () => {
-  initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
-    placeList.append(cardData);
-  });
-};
-
 const deleteCard = (cardElement) => {
   cardElement.remove();
 };
@@ -45,4 +34,4 @@ const likeCard = (likeButton) => {
   likeButton.classList.toggle("card__like-button_is-active");
 };
 
-export { placeCards, createCard, deleteCard, likeCard };
+export { createCard, deleteCard, likeCard };

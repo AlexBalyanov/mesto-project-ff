@@ -1,21 +1,4 @@
-import {
-  addCardForm,
-  jobDescription,
-  jobInput,
-  linkInput,
-  modalWindows,
-  nameInput,
-  placeInput,
-  placeList,
-  profileName,
-  showCardPopup
-} from "../index";
-
-import {
-  createCard,
-  deleteCard,
-  likeCard
-} from "./card";
+import { modalWindows, showCardPopup, popupImage, popupPlaceDescription} from "../index";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -37,48 +20,7 @@ const handleEscKey = (evt) => {
   }
 };
 
-const handleEditProfileFormSubmit = (evt) => {
-  evt.preventDefault();
-
-  const name = nameInput.value;
-  const job = jobInput.value;
-
-  profileName.textContent = name;
-  jobDescription.textContent = job;
-
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
-};
-
-const handleAddCardFormSubmit = (evt) => {
-  evt.preventDefault();
-
-  const place = placeInput.value;
-  const link = linkInput.value;
-
-  const cardObject = {
-    name: "",
-    link: ""
-  };
-
-  cardObject.name = place;
-  cardObject.link = link;
-
-  const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
-  placeList.prepend(cardData);
-
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
-
-  addCardForm.reset();
-};
-
 const showCard = (title, image, description) => {
-  const popupImage = showCardPopup.querySelector(".popup__image");
-  const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
-
   popupImage.src = image;
   popupImage.alt = description;
   popupPlaceDescription.textContent = title;
@@ -90,7 +32,5 @@ export {
   openModal,
   closeModal,
   handleEscKey,
-  handleEditProfileFormSubmit,
-  handleAddCardFormSubmit,
   showCard
 };
