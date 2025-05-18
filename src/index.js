@@ -1,6 +1,6 @@
 import "./pages/index.css";
 import { placeCards } from "./components/card";
-import {closeModal, openModal, handleEscKey, handleFormSubmit} from "./components/modal";
+import {closeModal, openModal, handleEditProfileFormSubmit, handleAddCardFormSubmit} from "./components/modal";
 
 const placeList = document.querySelector(".places__list");
 
@@ -21,6 +21,10 @@ const jobDescription = document.querySelector(".profile__description");
 
 nameInput.value = profileName.textContent;
 jobInput.value = jobDescription.textContent;
+
+const addCardForm = document.querySelector('form[name="new-place"]');
+const placeInput = document.querySelector('input[name="place-name"]');
+const linkInput = document.querySelector('input[name="link"]');
 
 placeCards();
 
@@ -46,6 +50,7 @@ modalWindows.forEach((item) => {
   });
 });
 
-editProfileForm.addEventListener("submit", handleFormSubmit);
+editProfileForm.addEventListener("submit", handleEditProfileFormSubmit);
+addCardForm.addEventListener("submit", handleAddCardFormSubmit);
 
-export { placeList, modalWindows, nameInput, jobInput, profileName, jobDescription }
+export { placeList, modalWindows, nameInput, jobInput, profileName, jobDescription, addCardForm, placeInput, linkInput }

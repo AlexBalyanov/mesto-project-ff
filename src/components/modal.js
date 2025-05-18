@@ -1,4 +1,15 @@
-import {jobDescription, jobInput, modalWindows, nameInput, profileName} from "../index";
+import {
+  addCardForm,
+  jobDescription,
+  jobInput,
+  linkInput,
+  modalWindows,
+  nameInput,
+  placeInput,
+  placeList,
+  profileName
+} from "../index";
+import {createCard, deleteCard} from "./card";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -18,7 +29,7 @@ const handleEscKey = (evt) => {
   }
 };
 
-const handleFormSubmit = (evt) => {
+const handleEditProfileFormSubmit = (evt) => {
   evt.preventDefault();
 
   const name = nameInput.value;
@@ -32,4 +43,28 @@ const handleFormSubmit = (evt) => {
   });
 };
 
-export { openModal, closeModal, handleEscKey, handleFormSubmit };
+const handleAddCardFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const place = placeInput.value;
+  const link = linkInput.value;
+
+  const cardObject = {
+    name: "",
+    link: ""
+  };
+
+  cardObject.name = place;
+  cardObject.link = link;
+
+  const cardData = createCard(cardObject, deleteCard);
+  placeList.prepend(cardData);
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+  });
+
+  addCardForm.reset();
+}
+
+export { openModal, closeModal, handleEscKey, handleEditProfileFormSubmit, handleAddCardFormSubmit };

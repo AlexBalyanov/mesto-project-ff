@@ -28,4 +28,4 @@ const deleteCard = (cardElement) => {
   cardElement.remove();
 };
 
-export { placeCards }
+export { placeCards, createCard, deleteCard }
