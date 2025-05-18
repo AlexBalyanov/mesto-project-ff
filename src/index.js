@@ -29,16 +29,16 @@ const linkInput = document.querySelector('input[name="link"]');
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
-nameInput.value = profileName.textContent;
-jobInput.value = jobDescription.textContent;
-
 placeCards();
 
 editProfileButton.addEventListener("click", () => {
+  nameInput.value = profileName.textContent;
+  jobInput.value = jobDescription.textContent;
   openModal(editProfilePopup);
 });
 
 addCardButton.addEventListener("click", () => {
+  addCardForm.reset();
   openModal(addCardPopup);
 });
 
