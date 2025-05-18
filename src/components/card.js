@@ -1,29 +1,38 @@
 import { initialCards } from "./cards";
 import { placeList } from "../index";
+import { showCard } from "./modal";
 
-const createCard = (dataFromCards, onDeleteCardCallback, OnCardLikeCallback) => {
+const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback) => {
 
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-  
-  cardElement.querySelector(".card__title").textContent = dataFromCards.name
-  cardElement.querySelector(".card__image").src = dataFromCards.link;
-  cardElement.querySelector(".card__image").alt = `Фотография места: ${dataFromCards.name}`;
-  
+
+  const cardTitle = cardElement.querySelector(".card__title");
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardDescription = cardElement.querySelector(".card__image");
+
+  const titleData = cardTitle.textContent = dataFromCards.name;
+  const imageData = cardImage.src = dataFromCards.link;
+  const altData = cardDescription.alt = `Фотография места: ${dataFromCards.name}`;
+
   cardElement.querySelector(".card__delete-button").addEventListener("click", () => {
     onDeleteCardCallback(cardElement);  
   });
 
   cardElement.querySelector(".card__like-button").addEventListener("click", (evt) => {
-    OnCardLikeCallback(evt.target);
-  })
+    onCardLikeCallback(evt.target);
+  });
+
+  cardImage.addEventListener("click", () => {
+    onShowCardCallback(titleData, imageData, altData);
+  });
 
   return cardElement;
 };
 
 const placeCards = () => {
   initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, likeCard);
+    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
     placeList.append(cardData);
   });
 };

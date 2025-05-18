@@ -7,9 +7,15 @@ import {
   nameInput,
   placeInput,
   placeList,
-  profileName
+  profileName,
+  showCardPopup
 } from "../index";
-import {createCard, deleteCard, likeCard} from "./card";
+
+import {
+  createCard,
+  deleteCard,
+  likeCard
+} from "./card";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -17,8 +23,10 @@ const openModal = (popup) => {
 };
 
 const closeModal = (popup) => {
-  popup.classList.remove("popup_is-opened");
-  document.removeEventListener("keydown", handleEscKey);
+  if (popup.classList.contains("popup_is-opened")) {
+    popup.classList.remove("popup_is-opened");
+    document.removeEventListener("keydown", handleEscKey);
+  }
 };
 
 const handleEscKey = (evt) => {
@@ -57,7 +65,7 @@ const handleAddCardFormSubmit = (evt) => {
   cardObject.name = place;
   cardObject.link = link;
 
-  const cardData = createCard(cardObject, deleteCard, likeCard);
+  const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
   placeList.prepend(cardData);
 
   modalWindows.forEach((item) => {
@@ -67,4 +75,22 @@ const handleAddCardFormSubmit = (evt) => {
   addCardForm.reset();
 };
 
-export { openModal, closeModal, handleEscKey, handleEditProfileFormSubmit, handleAddCardFormSubmit };
+const showCard = (title, image, description) => {
+  const popupImage = showCardPopup.querySelector(".popup__image");
+  const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
+
+  popupImage.src = image;
+  popupImage.alt = description;
+  popupPlaceDescription.textContent = title;
+
+  openModal(showCardPopup);
+};
+
+export {
+  openModal,
+  closeModal,
+  handleEscKey,
+  handleEditProfileFormSubmit,
+  handleAddCardFormSubmit,
+  showCard
+};
