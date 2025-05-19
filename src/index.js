@@ -1,10 +1,6 @@
 import "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card";
-import {
-  closeModal,
-  openModal,
-  showCard
-} from "./components/modal";
+import { closeModal, openModal } from "./components/modal";
 import { initialCards } from "./components/cards";
 
 const placeList = document.querySelector(".places__list");
@@ -32,12 +28,13 @@ const linkInput = document.querySelector('input[name="link"]');
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
-(function placeCards() {
-  initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
-    placeList.append(cardData);
-  });
-})();
+const showCard = (title, image, description) => {
+  popupImage.src = image;
+  popupImage.alt = description;
+  popupPlaceDescription.textContent = title;
+
+  openModal(showCardPopup);
+};
 
 const handleEditProfileFormSubmit = (evt) => {
   evt.preventDefault();
@@ -77,6 +74,13 @@ const handleAddCardFormSubmit = (evt) => {
   addCardForm.reset();
 };
 
+(() => {
+  initialCards.forEach((cardItem) => {
+    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
+    placeList.append(cardData);
+  });
+})();
+
 editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = jobDescription.textContent;
@@ -115,5 +119,5 @@ export {
   linkInput,
   showCardPopup,
   popupImage,
-  popupPlaceDescription
+  popupPlaceDescription,
 };

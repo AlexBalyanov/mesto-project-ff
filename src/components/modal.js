@@ -1,4 +1,4 @@
-import { modalWindows, showCardPopup, popupImage, popupPlaceDescription} from "../index";
+import { modalWindows } from "../index";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -20,17 +20,4 @@ const handleEscKey = (evt) => {
   }
 };
 
-const showCard = (title, image, description) => {
-  popupImage.src = image;
-  popupImage.alt = description;
-  popupPlaceDescription.textContent = title;
-
-  openModal(showCardPopup);
-};
-
-export {
-  openModal,
-  closeModal,
-  handleEscKey,
-  showCard
-};
+export { openModal, closeModal, handleEscKey };
