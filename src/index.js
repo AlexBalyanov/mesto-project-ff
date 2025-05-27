@@ -1,6 +1,7 @@
 import "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
+import { enableValidation } from "./components/validation";
 import { initialCards } from "./components/cards";
 
 const placeList = document.querySelector(".places__list");
@@ -121,3 +122,12 @@ export {
   popupImage,
   popupPlaceDescription,
 };
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
