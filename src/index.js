@@ -29,6 +29,18 @@ const linkInput = document.querySelector('input[name="link"]');
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  errorTextSelector: '.popup__input_error_text',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
+enableValidation(validationConfig);
+
 const showCard = (title, image, description) => {
   popupImage.src = image;
   popupImage.alt = description;
@@ -122,12 +134,3 @@ export {
   popupImage,
   popupPlaceDescription,
 };
-
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
