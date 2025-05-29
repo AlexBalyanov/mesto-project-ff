@@ -3,6 +3,7 @@ import { createCard, deleteCard, likeCard } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
 import { initialCards } from "./components/cards";
+import { loadProfileData } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
@@ -26,6 +27,7 @@ const addCardForm = document.querySelector('form[name="new-place"]');
 const placeInput = document.querySelector('input[name="place-name"]');
 const linkInput = document.querySelector('input[name="link"]');
 
+const profileImage = document.querySelector(".profile__image");
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
@@ -40,6 +42,13 @@ const validationConfig = {
 };
 
 enableValidation(validationConfig);
+
+loadProfileData()
+  .then((profileData) => {
+    profileName.textContent = profileData.name;
+    jobDescription.textContent = profileData.about;
+    profileImage.style.backgroundImage = `url(${profileData.avatar})`;
+  });
 
 const showCard = (title, image, description) => {
   popupImage.src = image;
