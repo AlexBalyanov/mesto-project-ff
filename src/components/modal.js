@@ -1,4 +1,5 @@
-import { modalWindows } from "../index";
+import { modalWindows, validationConfig } from "../index";
+import { clearValidation } from "./validation";
 
 const openModal = (popup) => {
   popup.classList.add("popup_is-opened");
@@ -9,6 +10,7 @@ const closeModal = (popup) => {
   if (popup.classList.contains("popup_is-opened")) {
     popup.classList.remove("popup_is-opened");
     document.removeEventListener("keydown", handleEscKey);
+    clearValidation(popup, validationConfig);
   }
 };
 

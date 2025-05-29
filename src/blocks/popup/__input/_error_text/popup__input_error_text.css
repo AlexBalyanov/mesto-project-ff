@@ -1,6 +1,10 @@
 .popup__input_error_text {
+  display: block;
+  block-size: 30px;
+  margin-block-start: 5px;
   font-size: 12px;
   font-weight: 400;
   color: #FF0000;
   opacity: 0;
+  transition-duration: 0.3s;
 }

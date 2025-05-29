@@ -133,4 +133,5 @@ export {
   showCardPopup,
   popupImage,
   popupPlaceDescription,
+  validationConfig
 };

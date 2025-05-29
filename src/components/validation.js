@@ -17,7 +17,12 @@ const showInputError = (formElement, inputElement, config) => {
 
   inputElement.classList.add(config.inputErrorClass);
   errorMessage.classList.add(config.errorClass);
-  errorMessage.textContent = inputElement.validationMessage;
+
+  if (inputElement.validity.patternMismatch) {
+    errorMessage.textContent = inputElement.dataset.errorMessage;
+  } else {
+    errorMessage.textContent = inputElement.validationMessage;
+  }
 };
 
 const hideInputError = (formElement, inputElement, config) => {
@@ -74,5 +79,5 @@ const clearValidation = (formElement, config) => {
   });
 };
 
-export { enableValidation };
+export { enableValidation, clearValidation };
 
