@@ -2,7 +2,7 @@ import "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
-import {loadCards, loadProfileData} from "./components/api";
+import { loadCards, loadProfileData, editProfile } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
@@ -54,7 +54,7 @@ await Promise.all([loadProfileData(), loadCards()])
 })
   .catch((error) => {
     console.log(error);
-  })
+  });
 
 const showCard = (title, image, description) => {
   popupImage.src = image;
@@ -70,8 +70,11 @@ const handleEditProfileFormSubmit = (evt) => {
   const name = nameInput.value;
   const job = jobInput.value;
 
-  profileName.textContent = name;
-  jobDescription.textContent = job;
+  editProfile(name, job)
+    .then((profileData) => {
+      profileName.textContent = profileData.name;
+      jobDescription.textContent = profileData.about;
+    });
 
   modalWindows.forEach((item) => {
     closeModal(item);
