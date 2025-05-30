@@ -2,8 +2,7 @@ import "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
-import { initialCards } from "./components/cards";
-import { loadProfileData } from "./components/api";
+import {loadCards, loadProfileData} from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
@@ -31,6 +30,8 @@ const profileImage = document.querySelector(".profile__image");
 const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
+let initialCards = [];
+
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -43,12 +44,17 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
-loadProfileData()
-  .then((profileData) => {
+await Promise.all([loadProfileData(), loadCards()])
+  .then(([profileData, cardsList]) => {
     profileName.textContent = profileData.name;
     jobDescription.textContent = profileData.about;
     profileImage.style.backgroundImage = `url(${profileData.avatar})`;
-  });
+
+    initialCards = cardsList;
+})
+  .catch((error) => {
+    console.log(error);
+  })
 
 const showCard = (title, image, description) => {
   popupImage.src = image;

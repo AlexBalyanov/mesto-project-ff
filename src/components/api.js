@@ -1,5 +1,3 @@
-
-
 const apiConfig = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-40",
   headers: {
@@ -10,7 +8,7 @@ const apiConfig = {
 };
 
 const loadProfileData = () => {
-  return fetch(`${apiConfig.baseUrl}/users/me`, {
+  return fetch(`${apiConfig.baseUrl}/users/mes`, {
     headers: {
       method: apiConfig.method,
       authorization: apiConfig.headers.authorization,
