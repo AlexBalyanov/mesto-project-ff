@@ -2,7 +2,7 @@ import "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
-import { loadCards, loadProfileData, editProfile } from "./components/api";
+import {loadCards, loadProfileData, editProfile, addNewCard} from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
@@ -51,10 +51,8 @@ await Promise.all([loadProfileData(), loadCards()])
     profileImage.style.backgroundImage = `url(${profileData.avatar})`;
 
     initialCards = cardsList;
-})
-  .catch((error) => {
-    console.log(error);
-  });
+    console.log(initialCards);
+});
 
 const showCard = (title, image, description) => {
   popupImage.src = image;
@@ -92,11 +90,15 @@ const handleAddCardFormSubmit = (evt) => {
     link: ""
   };
 
-  cardObject.name = place;
-  cardObject.link = link;
-
-  const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
-  placeList.prepend(cardData);
+  addNewCard(place, link)
+    .then((card) => {
+      cardObject.name = card.name;
+      cardObject.link = card.link;
+    })
+    .then(() => {
+      const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
+      placeList.prepend(cardData);
+    });
 
   modalWindows.forEach((item) => {
     closeModal(item);

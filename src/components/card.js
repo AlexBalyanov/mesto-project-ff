@@ -6,10 +6,12 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
   const cardDescription = cardElement.querySelector(".card__image");
+  const cardLikesNumber = cardElement.querySelector(".card__like-number");
 
   const titleData = cardTitle.textContent = dataFromCards.name;
   const imageData = cardImage.src = dataFromCards.link;
   const altData = cardDescription.alt = `Фотография места: ${dataFromCards.name}`;
+  const cardLikeData = cardLikesNumber.textContent = dataFromCards.likes.length;
 
   cardElement.querySelector(".card__delete-button").addEventListener("click", () => {
     onDeleteCardCallback(cardElement);  
