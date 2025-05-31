@@ -88,18 +88,9 @@ const handleAddCardFormSubmit = (evt) => {
   const place = placeInput.value;
   const link = linkInput.value;
 
-  const cardObject = {
-    name: "",
-    link: ""
-  };
-
   addNewCard(place, link)
     .then((card) => {
-      cardObject.name = card.name;
-      cardObject.link = card.link;
-    })
-    .then(() => {
-      const cardData = createCard(cardObject, deleteCard, likeCard, showCard, userId);
+      const cardData = createCard(card, deleteCard, likeCard, showCard, userId);
       placeList.prepend(cardData);
     });
 

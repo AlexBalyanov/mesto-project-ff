@@ -87,7 +87,27 @@ const addNewCard = (cardName, cardLink) => {
     });
 };
 
-export { loadProfileData, loadCards, editProfile, addNewCard }
+const deleteCardFromServer = (cardId) => {
+  return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: {
+      authorization: apiConfig.headers.authorization,
+      "Content-Type": "application/json"
+    }
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(res.status);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export { loadProfileData, loadCards, editProfile, addNewCard, deleteCardFromServer }
 
 
 

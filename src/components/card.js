@@ -1,3 +1,5 @@
+import { deleteCardFromServer } from "./api";
+
 const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback, userId) => {
 
   const cardTemplate = document.querySelector("#card-template").content;
@@ -16,7 +18,7 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
 
   if (userId === dataFromCards.owner._id) {
     cardDeleteButton.addEventListener("click", () => {
-    onDeleteCardCallback(cardElement);
+    onDeleteCardCallback(cardElement, dataFromCards._id);
   });
   } else {
     cardDeleteButton.remove();
@@ -33,8 +35,11 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   return cardElement;
 };
 
-const deleteCard = (cardElement) => {
-  cardElement.remove();
+const deleteCard = (cardElement, cardId) => {
+  deleteCardFromServer(cardId)
+    .then(() => {
+      cardElement.remove();
+    });
 };
 
 const likeCard = (likeButton) => {
