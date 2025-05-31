@@ -1,4 +1,4 @@
-const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback) => {
+const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback, userId) => {
 
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -7,15 +7,20 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   const cardImage = cardElement.querySelector(".card__image");
   const cardDescription = cardElement.querySelector(".card__image");
   const cardLikesNumber = cardElement.querySelector(".card__like-number");
+  const cardDeleteButton = cardElement.querySelector(".card__delete-button");
 
   const titleData = cardTitle.textContent = dataFromCards.name;
   const imageData = cardImage.src = dataFromCards.link;
   const altData = cardDescription.alt = `Фотография места: ${dataFromCards.name}`;
   const cardLikeData = cardLikesNumber.textContent = dataFromCards.likes.length;
 
-  cardElement.querySelector(".card__delete-button").addEventListener("click", () => {
-    onDeleteCardCallback(cardElement);  
+  if (userId === dataFromCards.owner._id) {
+    cardDeleteButton.addEventListener("click", () => {
+    onDeleteCardCallback(cardElement);
   });
+  } else {
+    cardDeleteButton.remove();
+  }
 
   cardElement.querySelector(".card__like-button").addEventListener("click", (evt) => {
     onCardLikeCallback(evt.target);

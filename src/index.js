@@ -31,6 +31,7 @@ const profileName = document.querySelector(".profile__title");
 const jobDescription = document.querySelector(".profile__description");
 
 let initialCards = [];
+let userId = "";
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -46,12 +47,14 @@ enableValidation(validationConfig);
 
 await Promise.all([loadProfileData(), loadCards()])
   .then(([profileData, cardsList]) => {
+    console.log(profileData) //----------------------------------------
     profileName.textContent = profileData.name;
     jobDescription.textContent = profileData.about;
     profileImage.style.backgroundImage = `url(${profileData.avatar})`;
 
     initialCards = cardsList;
-    console.log(initialCards);
+    userId = profileData._id;
+    console.log(initialCards, userId); //----------------------------------------
 });
 
 const showCard = (title, image, description) => {
@@ -96,7 +99,7 @@ const handleAddCardFormSubmit = (evt) => {
       cardObject.link = card.link;
     })
     .then(() => {
-      const cardData = createCard(cardObject, deleteCard, likeCard, showCard);
+      const cardData = createCard(cardObject, deleteCard, likeCard, showCard, userId);
       placeList.prepend(cardData);
     });
 
@@ -109,7 +112,7 @@ const handleAddCardFormSubmit = (evt) => {
 
 (() => {
   initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, likeCard, showCard);
+    const cardData = createCard(cardItem, deleteCard, likeCard, showCard, userId);
     placeList.append(cardData);
   });
 })();
