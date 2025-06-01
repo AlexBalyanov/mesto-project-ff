@@ -1,4 +1,4 @@
-import { deleteCardFromServer } from "./api";
+import { deleteCardFromServer, toggleLikeOnServer } from "./api";
 
 const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback, userId) => {
 
@@ -8,8 +8,13 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
   const cardDescription = cardElement.querySelector(".card__image");
+  const cardLikeButton = cardElement.querySelector(".card__like-button");
   const cardLikesNumber = cardElement.querySelector(".card__like-number");
   const cardDeleteButton = cardElement.querySelector(".card__delete-button");
+
+  const isMyLikeOnCard = dataFromCards.likes.some((user) => {
+    return user._id === userId;
+  });
 
   const titleData = cardTitle.textContent = dataFromCards.name;
   const imageData = cardImage.src = dataFromCards.link;
@@ -24,8 +29,12 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
     cardDeleteButton.remove();
   }
 
-  cardElement.querySelector(".card__like-button").addEventListener("click", (evt) => {
-    onCardLikeCallback(evt.target);
+  if (isMyLikeOnCard) {
+    cardLikeButton.classList.add("card__like-button_is-active");
+  }
+
+  cardLikeButton.addEventListener("click", (evt) => {
+    onCardLikeCallback(cardLikeButton, cardLikesNumber,  dataFromCards);
   });
 
   cardImage.addEventListener("click", () => {
@@ -42,8 +51,25 @@ const deleteCard = (cardElement, cardId) => {
     });
 };
 
-const likeCard = (likeButton) => {
-  likeButton.classList.toggle("card__like-button_is-active");
+const toggleLike = (likeButton, cardLikesNumber, dataFromCards) => {
+  const methodConfig = {
+    put: "PUT",
+    delete: "DELETE"
+  };
+
+  if (!likeButton.classList.contains("card__like-button_is-active")) {
+    toggleLikeOnServer(dataFromCards._id, methodConfig.put)
+      .then((card) => {
+        likeButton.classList.add("card__like-button_is-active");
+        cardLikesNumber.textContent = card.likes.length;
+      })
+  } else {
+    toggleLikeOnServer(dataFromCards._id, methodConfig.delete)
+      .then((card) => {
+        likeButton.classList.remove("card__like-button_is-active");
+        cardLikesNumber.textContent = card.likes.length;
+      })
+  }
 };
 
-export { createCard, deleteCard, likeCard };
+export { createCard, deleteCard, toggleLike };

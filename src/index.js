@@ -1,5 +1,5 @@
 import "./pages/index.css";
-import { createCard, deleteCard, likeCard } from "./components/card";
+import { createCard, deleteCard, toggleLike } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
 import {loadCards, loadProfileData, editProfile, addNewCard} from "./components/api";
@@ -90,7 +90,7 @@ const handleAddCardFormSubmit = (evt) => {
 
   addNewCard(place, link)
     .then((card) => {
-      const cardData = createCard(card, deleteCard, likeCard, showCard, userId);
+      const cardData = createCard(card, deleteCard, toggleLike, showCard, userId);
       placeList.prepend(cardData);
     });
 
@@ -103,7 +103,7 @@ const handleAddCardFormSubmit = (evt) => {
 
 (() => {
   initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, likeCard, showCard, userId);
+    const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
     placeList.append(cardData);
   });
 })();

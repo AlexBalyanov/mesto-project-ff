@@ -105,9 +105,29 @@ const deleteCardFromServer = (cardId) => {
     .catch((err) => {
       console.log(err);
     });
-}
+};
 
-export { loadProfileData, loadCards, editProfile, addNewCard, deleteCardFromServer }
+const toggleLikeOnServer = (cardId, method) => {
+  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
+    method: `${method}`,
+    headers: {
+      authorization: apiConfig.headers.authorization,
+      "Content-Type": "application/json"
+    }
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(res.status);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export { loadProfileData, loadCards, editProfile, addNewCard, deleteCardFromServer, toggleLikeOnServer }
 
 
 
