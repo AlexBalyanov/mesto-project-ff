@@ -1,0 +1,11 @@
+.profile__image-icon {
+  aspect-ratio: 1;
+  width: 26px;
+  fill: white;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.profile__image-button:hover .profile__image-icon {
+  opacity: 1;
+}
