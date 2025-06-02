@@ -71,8 +71,10 @@ const clearValidation = (formElement, config) => {
   const submitButtons = formElement.querySelectorAll(config.submitButtonSelector);
 
   submitButtons.forEach((submitButton) => {
-    submitButton.disabled = true;
-    submitButton.classList.add(config.inactiveButtonClass);
+    if (!submitButton.classList.contains(config.noDisableClass)) {
+      submitButton.disabled = true;
+      submitButton.classList.add(config.inactiveButtonClass);
+    }
   });
 
   inputs.forEach((input) => {
