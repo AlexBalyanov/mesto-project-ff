@@ -21,7 +21,7 @@
             class="profile__image-icon"
             fill="none"
             viewBox="0 0 26 26">
-            <path d="M26 3.454 6.77 22.794 3.336 19.29 22.517 0 26 3.454ZM0 26l5.102-1.53-3.581-3.453L0 26Z"/>
+            <path d="M26 3.454 6.77 22.794 3.336 19.29 22.517 0 26 3.454ZM0 26l5.102-1.53-3.581-3.453L0 26Z" fill="white"/>
           </svg>
         </button>
       </div>
@@ -110,6 +110,23 @@
       <img src="" alt="" class="popup__image">
       <p class="popup__caption"></p>
     </div>
+  </div>
+</div>
+<div class="popup popup_type_new-avatar popup_is-animated">
+  <div class="popup__content">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Обновить аватар</h3>
+    <form class="popup__form" name="edit-avatar">
+      <input
+        type="url"
+        name="avatar-link"
+        class="popup__input popup__input_type_url"
+        placeholder="Ссылка на картинку"
+        required
+      >
+      <span class="popup__input_error_text avatar-link-error"></span>
+      <button type="submit" class="button popup__button">Сохранить</button>
+    </form>
   </div>
 </div>
 

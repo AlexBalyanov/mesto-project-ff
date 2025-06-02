@@ -1,16 +1,18 @@
 import "./pages/index.css";
 import { createCard, deleteCard, toggleLike } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
-import { enableValidation } from "./components/validation";
-import {loadCards, loadProfileData, editProfile, addNewCard} from "./components/api";
+import { enableValidation, clearValidation } from "./components/validation";
+import {loadCards, loadProfileData, editProfile, addNewCard, editAvatar } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
 const editProfileButton = document.querySelector(".profile__edit-button");
+const editAvatarButton = document.querySelector(".profile__image-button");
 const addCardButton = document.querySelector(".profile__add-button");
 const popupCloseButtons = document.querySelectorAll(".popup__close");
 
 const editProfilePopup = document.querySelector(".popup_type_edit");
+const editAvatarPopup = document.querySelector(".popup_type_new-avatar");
 const addCardPopup = document.querySelector(".popup_type_new-card");
 const showCardPopup = document.querySelector(".popup_type_image");
 const popupImage = showCardPopup.querySelector(".popup__image");
@@ -19,12 +21,14 @@ const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
 const modalWindows = document.querySelectorAll(".popup");
 
 const editProfileForm = document.querySelector('form[name="edit-profile"]');
+const editAvatarForm = document.querySelector('form[name="edit-avatar"]');
 const nameInput = document.querySelector('input[name="name"]');
 const jobInput = document.querySelector('input[name="description"]');
 
 const addCardForm = document.querySelector('form[name="new-place"]');
 const placeInput = document.querySelector('input[name="place-name"]');
 const linkInput = document.querySelector('input[name="link"]');
+const editAvatarInput = document.querySelector('input[name="avatar-link"]');
 
 const profileImage = document.querySelector(".profile__image");
 const profileName = document.querySelector(".profile__title");
@@ -101,6 +105,23 @@ const handleAddCardFormSubmit = (evt) => {
   addCardForm.reset();
 };
 
+const handleEditAvatarFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  const link = editAvatarInput.value;
+
+  editAvatar(link)
+    .then((profile) => {
+      profileImage.style.backgroundImage = `url(${profile.avatar})`;
+    });
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+  });
+
+  editAvatarForm.reset();
+};
+
 (() => {
   initialCards.forEach((cardItem) => {
     const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
@@ -112,6 +133,11 @@ editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = jobDescription.textContent;
   openModal(editProfilePopup);
+});
+
+editAvatarButton.addEventListener("click", () => {
+  editAvatarForm.reset();
+  openModal(editAvatarPopup);
 });
 
 addCardButton.addEventListener("click", () => {
@@ -133,6 +159,7 @@ modalWindows.forEach((item) => {
 
 editProfileForm.addEventListener("submit", handleEditProfileFormSubmit);
 addCardForm.addEventListener("submit", handleAddCardFormSubmit);
+editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
 
 export {
   placeList,

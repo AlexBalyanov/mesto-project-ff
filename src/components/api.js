@@ -63,6 +63,29 @@ const editProfile = (profileName, profileDescription) => {
     })
 };
 
+const editAvatar = (link) => {
+  return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: {
+      authorization: apiConfig.headers.authorization,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      avatar: link
+    })
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(res.status);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
 const addNewCard = (cardName, cardLink) => {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     method: "POST",
@@ -127,7 +150,15 @@ const toggleLikeOnServer = (cardId, method) => {
     });
 };
 
-export { loadProfileData, loadCards, editProfile, addNewCard, deleteCardFromServer, toggleLikeOnServer }
+export {
+  loadProfileData,
+  loadCards,
+  editProfile,
+  addNewCard,
+  deleteCardFromServer,
+  toggleLikeOnServer,
+  editAvatar
+};
 
 
 

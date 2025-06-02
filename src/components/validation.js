@@ -68,6 +68,12 @@ const toggleButtonState = (inputs, button, config) => {
 const clearValidation = (formElement, config) => {
   const inputs = formElement.querySelectorAll(config.inputSelector);
   const errorMessages = formElement.querySelectorAll(config.errorTextSelector);
+  const submitButtons = formElement.querySelectorAll(config.submitButtonSelector);
+
+  submitButtons.forEach((submitButton) => {
+    submitButton.disabled = true;
+    submitButton.classList.add(config.inactiveButtonClass);
+  });
 
   inputs.forEach((input) => {
     input.classList.remove(config.inputErrorClass);
