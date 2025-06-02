@@ -1,4 +1,6 @@
-import { deleteCardFromServer, toggleLikeOnServer } from "./api";
+import { toggleLikeOnServer } from "./api";
+import { deleteCardPopup, deleteCardForm, handleDeleteCardFormSubmit } from "../index";
+import { openModal } from "./modal";
 
 const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback, userId) => {
 
@@ -45,10 +47,11 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
 };
 
 const deleteCard = (cardElement, cardId) => {
-  deleteCardFromServer(cardId)
-    .then(() => {
-      cardElement.remove();
-    });
+  openModal(deleteCardPopup);
+
+  deleteCardForm.addEventListener("submit", (evt) => {
+    handleDeleteCardFormSubmit(evt, cardElement, cardId);
+  });
 };
 
 const toggleLike = (likeButton, cardLikesNumber, dataFromCards) => {

@@ -2,7 +2,7 @@ import "./pages/index.css";
 import { createCard, deleteCard, toggleLike } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
 import { enableValidation } from "./components/validation";
-import {loadCards, loadProfileData, editProfile, addNewCard, editAvatar } from "./components/api";
+import { loadCards, deleteCardFromServer, loadProfileData, editProfile, addNewCard, editAvatar } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
 
@@ -16,18 +16,20 @@ const editProfilePopup = document.querySelector(".popup_type_edit");
 const editAvatarPopup = document.querySelector(".popup_type_new-avatar");
 const addCardPopup = document.querySelector(".popup_type_new-card");
 const showCardPopup = document.querySelector(".popup_type_image");
+const deleteCardPopup = document.querySelector(".popup_type_delete");
 const popupImage = showCardPopup.querySelector(".popup__image");
 const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
 
 const modalWindows = document.querySelectorAll(".popup");
 
 const editAvatarForm = document.forms["edit-avatar"];
-const editAvatarInput = editAvatarForm.elements["avatar-link"];
 const editProfileForm = document.forms["edit-profile"];
+const addCardForm = document.forms["new-place"];
+const deleteCardForm = document.forms["delete-card"];
+
+const editAvatarInput = editAvatarForm.elements["avatar-link"];
 const nameInput = editProfileForm.elements["profile-name"];
 const jobInput = editProfileForm.elements["description"];
-
-const addCardForm = document.forms["new-place"];
 const placeInput = addCardForm.elements["place-name"];
 const linkInput = addCardForm.elements["link"];
 
@@ -45,7 +47,8 @@ const validationConfig = {
   errorTextSelector: '.popup__input_error_text',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
+  errorClass: 'popup__error_visible',
+  noDisableClass: 'no-disable'
 };
 
 enableValidation(validationConfig);
@@ -134,6 +137,19 @@ const handleEditAvatarFormSubmit = (evt) => {
   editAvatarForm.reset();
 };
 
+const handleDeleteCardFormSubmit = (evt, cardElement, cardId) => {
+  evt.preventDefault();
+
+  deleteCardFromServer(cardId)
+    .then(() => {
+      cardElement.remove();
+    });
+
+  modalWindows.forEach((item) => {
+    closeModal(item);
+  });
+};
+
 const renderLoading = (isLoading) => {
   submitButtons.forEach((button) => {
     if (isLoading) {
@@ -160,9 +176,9 @@ addCardButton.addEventListener("click", () => {
   openModal(addCardPopup);
 });
 
-popupCloseButtons.forEach((item) => {
-  item.addEventListener("click", () => {
-    closeModal(item.closest(".popup"));
+popupCloseButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    closeModal(button.closest(".popup"));
   });
 });
 
@@ -190,5 +206,8 @@ export {
   popupImage,
   popupPlaceDescription,
   validationConfig,
-  renderLoading
+  deleteCardPopup,
+  deleteCardForm,
+  renderLoading,
+  handleDeleteCardFormSubmit
 };
