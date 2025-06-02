@@ -1,3 +1,5 @@
+import { renderLoading } from "../index";
+
 const apiConfig = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-40",
   headers: {
@@ -61,6 +63,9 @@ const editProfile = (profileName, profileDescription) => {
     .catch((err) => {
       console.log(err);
     })
+    .finally(() => {
+      renderLoading(false);
+    });
 };
 
 const editAvatar = (link) => {
@@ -84,6 +89,9 @@ const editAvatar = (link) => {
     .catch((err) => {
       console.log(err);
     })
+    .finally(() => {
+      renderLoading(false);
+    });
 };
 
 const addNewCard = (cardName, cardLink) => {
@@ -107,6 +115,9 @@ const addNewCard = (cardName, cardLink) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false);
     });
 };
 

@@ -1,7 +1,7 @@
 import "./pages/index.css";
 import { createCard, deleteCard, toggleLike } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
-import { enableValidation, clearValidation } from "./components/validation";
+import { enableValidation } from "./components/validation";
 import {loadCards, loadProfileData, editProfile, addNewCard, editAvatar } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
@@ -10,6 +10,7 @@ const editProfileButton = document.querySelector(".profile__edit-button");
 const editAvatarButton = document.querySelector(".profile__image-button");
 const addCardButton = document.querySelector(".profile__add-button");
 const popupCloseButtons = document.querySelectorAll(".popup__close");
+const submitButtons = document.querySelectorAll(".popup__button");
 
 const editProfilePopup = document.querySelector(".popup_type_edit");
 const editAvatarPopup = document.querySelector(".popup_type_new-avatar");
@@ -20,15 +21,15 @@ const popupPlaceDescription = showCardPopup.querySelector(".popup__caption");
 
 const modalWindows = document.querySelectorAll(".popup");
 
-const editProfileForm = document.querySelector('form[name="edit-profile"]');
-const editAvatarForm = document.querySelector('form[name="edit-avatar"]');
-const nameInput = document.querySelector('input[name="name"]');
-const jobInput = document.querySelector('input[name="description"]');
+const editAvatarForm = document.forms["edit-avatar"];
+const editAvatarInput = editAvatarForm.elements["avatar-link"];
+const editProfileForm = document.forms["edit-profile"];
+const nameInput = editProfileForm.elements["profile-name"];
+const jobInput = editProfileForm.elements["description"];
 
-const addCardForm = document.querySelector('form[name="new-place"]');
-const placeInput = document.querySelector('input[name="place-name"]');
-const linkInput = document.querySelector('input[name="link"]');
-const editAvatarInput = document.querySelector('input[name="avatar-link"]');
+const addCardForm = document.forms["new-place"];
+const placeInput = addCardForm.elements["place-name"];
+const linkInput = addCardForm.elements["link"];
 
 const profileImage = document.querySelector(".profile__image");
 const profileName = document.querySelector(".profile__title");
@@ -51,14 +52,12 @@ enableValidation(validationConfig);
 
 await Promise.all([loadProfileData(), loadCards()])
   .then(([profileData, cardsList]) => {
-    console.log(profileData) //----------------------------------------
     profileName.textContent = profileData.name;
     jobDescription.textContent = profileData.about;
     profileImage.style.backgroundImage = `url(${profileData.avatar})`;
 
     initialCards = cardsList;
     userId = profileData._id;
-    console.log(initialCards, userId); //----------------------------------------
 });
 
 const showCard = (title, image, description) => {
@@ -69,11 +68,20 @@ const showCard = (title, image, description) => {
   openModal(showCardPopup);
 };
 
+(() => {
+  initialCards.forEach((cardItem) => {
+    const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
+    placeList.append(cardData);
+  });
+})();
+
 const handleEditProfileFormSubmit = (evt) => {
   evt.preventDefault();
 
   const name = nameInput.value;
   const job = jobInput.value;
+
+  renderLoading(true);
 
   editProfile(name, job)
     .then((profileData) => {
@@ -91,6 +99,8 @@ const handleAddCardFormSubmit = (evt) => {
 
   const place = placeInput.value;
   const link = linkInput.value;
+
+  renderLoading(true);
 
   addNewCard(place, link)
     .then((card) => {
@@ -110,6 +120,8 @@ const handleEditAvatarFormSubmit = (evt) => {
 
   const link = editAvatarInput.value;
 
+  renderLoading(true);
+
   editAvatar(link)
     .then((profile) => {
       profileImage.style.backgroundImage = `url(${profile.avatar})`;
@@ -122,12 +134,15 @@ const handleEditAvatarFormSubmit = (evt) => {
   editAvatarForm.reset();
 };
 
-(() => {
-  initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
-    placeList.append(cardData);
+const renderLoading = (isLoading) => {
+  submitButtons.forEach((button) => {
+    if (isLoading) {
+      button.textContent = "Сохранение..."
+    } else {
+      button.textContent = "Сохранить"
+    }
   });
-})();
+};
 
 editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
@@ -174,5 +189,6 @@ export {
   showCardPopup,
   popupImage,
   popupPlaceDescription,
-  validationConfig
+  validationConfig,
+  renderLoading
 };
