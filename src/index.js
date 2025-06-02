@@ -84,7 +84,7 @@ const handleEditProfileFormSubmit = (evt) => {
   const name = nameInput.value;
   const job = jobInput.value;
 
-  renderLoading(true);
+  renderLoading(true, "Сохранение...");
 
   editProfile(name, job)
     .then((profileData) => {
@@ -103,7 +103,7 @@ const handleAddCardFormSubmit = (evt) => {
   const place = placeInput.value;
   const link = linkInput.value;
 
-  renderLoading(true);
+  renderLoading(true, "Сохранение...");
 
   addNewCard(place, link)
     .then((card) => {
@@ -123,7 +123,7 @@ const handleEditAvatarFormSubmit = (evt) => {
 
   const link = editAvatarInput.value;
 
-  renderLoading(true);
+  renderLoading(true, "Сохранение...");
 
   editAvatar(link)
     .then((profile) => {
@@ -140,6 +140,8 @@ const handleEditAvatarFormSubmit = (evt) => {
 const handleDeleteCardFormSubmit = (evt, cardElement, cardId) => {
   evt.preventDefault();
 
+  renderLoading(true, "Удаление...");
+
   deleteCardFromServer(cardId)
     .then(() => {
       cardElement.remove();
@@ -150,12 +152,12 @@ const handleDeleteCardFormSubmit = (evt, cardElement, cardId) => {
   });
 };
 
-const renderLoading = (isLoading) => {
+const renderLoading = (isLoading, pendingText) => {
   submitButtons.forEach((button) => {
     if (isLoading) {
-      button.textContent = "Сохранение..."
+      button.textContent = `${pendingText}`;
     } else {
-      button.textContent = "Сохранить"
+      button.textContent = button.dataset.name;
     }
   });
 };

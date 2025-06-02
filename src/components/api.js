@@ -64,7 +64,7 @@ const editProfile = (profileName, profileDescription) => {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false);
+      renderLoading(false, "Сохранение...");
     });
 };
 
@@ -90,7 +90,7 @@ const editAvatar = (link) => {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false);
+      renderLoading(false, "Сохранение...");
     });
 };
 
@@ -117,7 +117,7 @@ const addNewCard = (cardName, cardLink) => {
       console.log(err);
     })
     .finally(() => {
-      renderLoading(false);
+      renderLoading(false, "Сохранение...");
     });
 };
 
@@ -138,6 +138,9 @@ const deleteCardFromServer = (cardId) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, "Удаление...");
     });
 };
 
