@@ -1,7 +1,7 @@
 import "./pages/index.css";
-import { createCard, deleteCard, toggleLike } from "./components/card";
+import { createCard, toggleLike } from "./components/card";
 import { closeModal, openModal } from "./components/modal";
-import { enableValidation } from "./components/validation";
+import { enableValidation, clearValidation } from "./components/validation";
 import { loadCards, deleteCardFromServer, loadProfileData, editProfile, addNewCard, editAvatar } from "./components/api";
 
 const placeList = document.querySelector(".places__list");
@@ -40,6 +40,9 @@ const jobDescription = document.querySelector(".profile__description");
 let initialCards = [];
 let userId = "";
 
+let cardElement = {};
+let cardId = "";
+
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -74,12 +77,12 @@ const showCard = (title, image, description) => {
   openModal(showCardPopup);
 };
 
-(() => {
-  initialCards.forEach((cardItem) => {
-    const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
-    placeList.append(cardData);
-  });
-})();
+const deleteCard = (card, id) => {
+  openModal(deleteCardPopup);
+
+  cardElement = card;
+  cardId = id;
+};
 
 const handleEditProfileFormSubmit = (evt) => {
   evt.preventDefault();
@@ -148,7 +151,7 @@ const handleEditAvatarFormSubmit = (evt) => {
     });
 };
 
-const handleDeleteCardFormSubmit = (evt, cardElement, cardId) => {
+const handleDeleteCardFormSubmit = (evt) => {
   evt.preventDefault();
 
   renderLoading(true, deleteCardPopup, "Удаление...", "Да");
@@ -176,19 +179,32 @@ const renderLoading = (isLoading, popup, pendingText, normalText) => {
     }
 };
 
+(() => {
+  initialCards.forEach((cardItem) => {
+    const cardData = createCard(cardItem, deleteCard, toggleLike, showCard, userId);
+    placeList.append(cardData);
+  });
+})();
+
 editProfileButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = jobDescription.textContent;
+
+  clearValidation(editProfilePopup, validationConfig);
   openModal(editProfilePopup);
 });
 
 editAvatarButton.addEventListener("click", () => {
   editAvatarForm.reset();
+
+  clearValidation(editAvatarPopup, validationConfig);
   openModal(editAvatarPopup);
 });
 
 addCardButton.addEventListener("click", () => {
   addCardForm.reset();
+
+  clearValidation(addCardPopup, validationConfig);
   openModal(addCardPopup);
 });
 
@@ -207,23 +223,4 @@ modalWindows.forEach((item) => {
 editProfileForm.addEventListener("submit", handleEditProfileFormSubmit);
 addCardForm.addEventListener("submit", handleAddCardFormSubmit);
 editAvatarForm.addEventListener("submit", handleEditAvatarFormSubmit);
-
-export {
-  placeList,
-  modalWindows,
-  nameInput,
-  jobInput,
-  profileName,
-  jobDescription,
-  addCardForm,
-  placeInput,
-  linkInput,
-  showCardPopup,
-  popupImage,
-  popupPlaceDescription,
-  validationConfig,
-  deleteCardPopup,
-  deleteCardForm,
-  renderLoading,
-  handleDeleteCardFormSubmit
-};
+deleteCardForm.addEventListener("submit", handleDeleteCardFormSubmit);

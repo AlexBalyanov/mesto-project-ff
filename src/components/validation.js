@@ -55,10 +55,14 @@ const enableValidation = (config) => {
   });
 };
 
+const disableButton = (button, config) => {
+  button.disabled = true;
+  button.classList.add(config.inactiveButtonClass);
+};
+
 const toggleButtonState = (inputs, button, config) => {
   if (hasInvalidInput(inputs)) {
-    button.disabled = true;
-    button.classList.add(config.inactiveButtonClass);
+    disableButton(button, config);
   } else {
     button.disabled = false;
     button.classList.remove(config.inactiveButtonClass);
@@ -72,13 +76,12 @@ const clearValidation = (formElement, config) => {
 
   submitButtons.forEach((submitButton) => {
     if (!submitButton.classList.contains(config.noDisableClass)) {
-      submitButton.disabled = true;
-      submitButton.classList.add(config.inactiveButtonClass);
+      disableButton(submitButton, config);
     }
   });
 
   inputs.forEach((input) => {
-    input.classList.remove(config.inputErrorClass);
+    hideInputError(formElement, input, config );
   });
 
   errorMessages.forEach((error) => {

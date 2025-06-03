@@ -1,6 +1,4 @@
 import { toggleLikeOnServer } from "./api";
-import { deleteCardPopup, deleteCardForm, handleDeleteCardFormSubmit } from "../index";
-import { openModal } from "./modal";
 
 const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onShowCardCallback, userId) => {
 
@@ -46,14 +44,6 @@ const createCard = (dataFromCards, onDeleteCardCallback, onCardLikeCallback, onS
   return cardElement;
 };
 
-const deleteCard = (cardElement, cardId) => {
-  openModal(deleteCardPopup);
-
-  deleteCardForm.addEventListener("submit", (evt) => {
-    handleDeleteCardFormSubmit(evt, cardElement, cardId);
-  });
-};
-
 const toggleLike = (likeButton, cardLikesNumber, dataFromCards) => {
   const methodConfig = {
     put: "PUT",
@@ -81,4 +71,4 @@ const toggleLike = (likeButton, cardLikesNumber, dataFromCards) => {
   }
 };
 
-export { createCard, deleteCard, toggleLike };
+export { createCard, toggleLike };
