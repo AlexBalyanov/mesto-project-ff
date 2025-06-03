@@ -1,5 +1,3 @@
-import { renderLoading } from "../index";
-
 const apiConfig = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-40",
   headers: {
@@ -9,36 +7,26 @@ const apiConfig = {
   },
 };
 
+const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(res.status);
+  }
+};
+
 const loadProfileData = () => {
   return fetch(`${apiConfig.baseUrl}/users/me`, {
     headers: apiConfig.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((res => checkResponse(res)));
 };
 
 const loadCards = () => {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     headers: apiConfig.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((res => checkResponse(res)));
 };
 
 const editProfile = (profileName, profileDescription) => {
@@ -53,19 +41,7 @@ const editProfile = (profileName, profileDescription) => {
       about: profileDescription,
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(res.status);
-    }
-  })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false, "Сохранение...");
-    });
+    .then((res => checkResponse(res)));
 };
 
 const editAvatar = (link) => {
@@ -79,19 +55,7 @@ const editAvatar = (link) => {
       avatar: link
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false, "Сохранение...");
-    });
+    .then((res => checkResponse(res)));
 };
 
 const addNewCard = (cardName, cardLink) => {
@@ -106,19 +70,7 @@ const addNewCard = (cardName, cardLink) => {
       link: cardLink,
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false, "Сохранение...");
-    });
+    .then((res => checkResponse(res)));
 };
 
 const deleteCardFromServer = (cardId) => {
@@ -129,19 +81,7 @@ const deleteCardFromServer = (cardId) => {
       "Content-Type": "application/json"
     }
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderLoading(false, "Удаление...");
-    });
+    .then((res => checkResponse(res)));
 };
 
 const toggleLikeOnServer = (cardId, method) => {
@@ -152,16 +92,7 @@ const toggleLikeOnServer = (cardId, method) => {
       "Content-Type": "application/json"
     }
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(res.status);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    .then((res => checkResponse(res)));
 };
 
 export {

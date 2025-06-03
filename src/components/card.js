@@ -66,12 +66,18 @@ const toggleLike = (likeButton, cardLikesNumber, dataFromCards) => {
         likeButton.classList.add("card__like-button_is-active");
         cardLikesNumber.textContent = card.likes.length;
       })
+      .catch((err) => {
+        console.log(err);
+      });
   } else {
     toggleLikeOnServer(dataFromCards._id, methodConfig.delete)
       .then((card) => {
         likeButton.classList.remove("card__like-button_is-active");
         cardLikesNumber.textContent = card.likes.length;
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 };
 

@@ -61,7 +61,10 @@ await Promise.all([loadProfileData(), loadCards()])
 
     initialCards = cardsList;
     userId = profileData._id;
-});
+})
+  .catch((err) => {
+    console.log(err);
+  });
 
 const showCard = (title, image, description) => {
   popupImage.src = image;
@@ -84,17 +87,21 @@ const handleEditProfileFormSubmit = (evt) => {
   const name = nameInput.value;
   const job = jobInput.value;
 
-  renderLoading(true, "Сохранение...");
+  renderLoading(true, editProfilePopup, "Сохранение...", "Сохранить");
 
   editProfile(name, job)
     .then((profileData) => {
       profileName.textContent = profileData.name;
       jobDescription.textContent = profileData.about;
-    });
 
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
+      closeModal(editProfilePopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, editProfilePopup, "Сохранение...", "Сохранить");
+    });
 };
 
 const handleAddCardFormSubmit = (evt) => {
@@ -103,19 +110,21 @@ const handleAddCardFormSubmit = (evt) => {
   const place = placeInput.value;
   const link = linkInput.value;
 
-  renderLoading(true, "Сохранение...");
+  renderLoading(true, addCardPopup, "Сохранение...", "Сохранить");
 
   addNewCard(place, link)
     .then((card) => {
       const cardData = createCard(card, deleteCard, toggleLike, showCard, userId);
       placeList.prepend(cardData);
+      closeModal(addCardPopup);
+      addCardForm.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, addCardPopup, "Сохранение...", "Сохранить");
     });
-
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
-
-  addCardForm.reset();
 };
 
 const handleEditAvatarFormSubmit = (evt) => {
@@ -123,43 +132,48 @@ const handleEditAvatarFormSubmit = (evt) => {
 
   const link = editAvatarInput.value;
 
-  renderLoading(true, "Сохранение...");
+  renderLoading(true, editAvatarPopup, "Сохранение...", "Сохранить");
 
   editAvatar(link)
     .then((profile) => {
       profileImage.style.backgroundImage = `url(${profile.avatar})`;
+      closeModal(editAvatarPopup);
+      editAvatarForm.reset();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, editAvatarPopup, "Сохранение...", "Сохранить");
     });
-
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
-
-  editAvatarForm.reset();
 };
 
 const handleDeleteCardFormSubmit = (evt, cardElement, cardId) => {
   evt.preventDefault();
 
-  renderLoading(true, "Удаление...");
+  renderLoading(true, deleteCardPopup, "Удаление...", "Да");
 
   deleteCardFromServer(cardId)
     .then(() => {
       cardElement.remove();
+      closeModal(deleteCardPopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderLoading(false, deleteCardPopup, "Удаление...", "Да");
     });
-
-  modalWindows.forEach((item) => {
-    closeModal(item);
-  });
 };
 
-const renderLoading = (isLoading, pendingText) => {
-  submitButtons.forEach((button) => {
+const renderLoading = (isLoading, popup, pendingText, normalText) => {
+  const submitButton = popup.querySelector(".popup__button");
+
     if (isLoading) {
-      button.textContent = `${pendingText}`;
+      submitButton.textContent = `${pendingText}`;
     } else {
-      button.textContent = button.dataset.name;
+      submitButton.textContent = `${normalText}`;
     }
-  });
 };
 
 editProfileButton.addEventListener("click", () => {
